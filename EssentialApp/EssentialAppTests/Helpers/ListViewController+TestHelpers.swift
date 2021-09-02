@@ -69,7 +69,7 @@ extension ListViewController {
 extension ListViewController {
 	@discardableResult
 	func simulateFeedImageViewVisible(at index: Int) -> FeedImageCell? {
-		return feedImageView(at: index) as? FeedImageCell
+		return feedImageView(at: index)
 	}
 
 	@discardableResult
@@ -111,8 +111,8 @@ extension ListViewController {
 		numberOfRows(in: feedImagesSection)
 	}
 
-	func feedImageView(at row: Int) -> UITableViewCell? {
-		cell(row: row, section: feedImagesSection)
+	func feedImageView(at row: Int) -> FeedImageCell? {
+		cell(row: row, section: feedImagesSection) as? FeedImageCell
 	}
 
 	private var feedImagesSection: Int { 0 }
