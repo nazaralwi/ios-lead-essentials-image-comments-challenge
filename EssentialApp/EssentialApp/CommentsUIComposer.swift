@@ -13,9 +13,7 @@ public final class CommentsUIComposer {
 	private typealias CommentsPresentationAdapter = LoadResourcePresentationAdapter<[ImageComment], CommentsViewAdapter>
 
 	public static func commentsComposedWith(
-		commentsLoader: @escaping () -> AnyPublisher<[ImageComment], Error>,
-		imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher,
-		selection: @escaping (FeedImage) -> Void = { _ in }
+		commentsLoader: @escaping () -> AnyPublisher<[ImageComment], Error>
 	) -> ListViewController {
 		let presentationAdapter = CommentsPresentationAdapter(loader: commentsLoader)
 
@@ -23,10 +21,7 @@ public final class CommentsUIComposer {
 		commentsController.onRefresh = presentationAdapter.loadResource
 
 		presentationAdapter.presenter = LoadResourcePresenter(
-			resourceView: CommentsViewAdapter(
-				controller: commentsController,
-				imageLoader: imageLoader,
-				selection: selection),
+			resourceView: CommentsViewAdapter(controller: commentsController),
 			loadingView: WeakRefVirtualProxy(commentsController),
 			errorView: WeakRefVirtualProxy(commentsController),
 			mapper: { ImageCommentsPresenter.map($0) })
@@ -45,15 +40,9 @@ public final class CommentsUIComposer {
 
 private final class CommentsViewAdapter: ResourceView {
 	private weak var controller: ListViewController?
-	private let imageLoader: (URL) -> FeedImageDataLoader.Publisher
-	private let selection: (FeedImage) -> Void
 
-	private typealias ImageDataPresentationAdapter = LoadResourcePresentationAdapter<Data, WeakRefVirtualProxy<FeedImageCellController>>
-
-	init(controller: ListViewController, imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher, selection: @escaping (FeedImage) -> Void) {
+	init(controller: ListViewController) {
 		self.controller = controller
-		self.imageLoader = imageLoader
-		self.selection = selection
 	}
 
 	func display(_ viewModel: ImageCommentsViewModel) {

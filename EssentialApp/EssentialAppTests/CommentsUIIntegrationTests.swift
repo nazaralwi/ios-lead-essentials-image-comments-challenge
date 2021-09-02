@@ -130,17 +130,9 @@ class CommentsUIIntegrationTests: FeedUIIntegrationTests {
 
 	// MARK: - Helpers
 
-	private func makeSUT(
-		selection: @escaping (FeedImage) -> Void = { _ in },
-		file: StaticString = #filePath,
-		line: UInt = #line
-	) -> (sut: ListViewController, loader: LoaderSpy) {
+	private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: ListViewController, loader: LoaderSpy) {
 		let loader = LoaderSpy()
-		let sut = CommentsUIComposer.commentsComposedWith(
-			commentsLoader: loader.loadPublisher,
-			imageLoader: loader.loadImageDataPublisher,
-			selection: selection
-		)
+		let sut = CommentsUIComposer.commentsComposedWith(commentsLoader: loader.loadPublisher)
 		trackForMemoryLeaks(loader, file: file, line: line)
 		trackForMemoryLeaks(sut, file: file, line: line)
 		return (sut, loader)
@@ -162,13 +154,7 @@ class CommentsUIIntegrationTests: FeedUIIntegrationTests {
 		}
 	}
 
-	private func anyImageData() -> Data {
-		return UIImage.make(withColor: .red).pngData()!
-	}
-
-	private class LoaderSpy: FeedImageDataLoader {
-		// MARK: - FeedLoader
-
+	private class LoaderSpy {
 		private var requests = [PassthroughSubject<[ImageComment], Error>]()
 
 		var loadCommentsCallCount: Int {
@@ -188,37 +174,6 @@ class CommentsUIIntegrationTests: FeedUIIntegrationTests {
 		func completeCommentsLoadingWithError(at index: Int = 0) {
 			let error = NSError(domain: "an error", code: 0)
 			requests[index].send(completion: .failure(error))
-		}
-
-		// MARK: - FeedImageDataLoader
-
-		private struct TaskSpy: FeedImageDataLoaderTask {
-			let cancelCallback: () -> Void
-			func cancel() {
-				cancelCallback()
-			}
-		}
-
-		private var imageRequests = [(url: URL, completion: (FeedImageDataLoader.Result) -> Void)]()
-
-		var loadedImageURLs: [URL] {
-			return imageRequests.map { $0.url }
-		}
-
-		private(set) var cancelledImageURLs = [URL]()
-
-		func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
-			imageRequests.append((url, completion))
-			return TaskSpy { [weak self] in self?.cancelledImageURLs.append(url) }
-		}
-
-		func completeImageLoading(with imageData: Data = Data(), at index: Int = 0) {
-			imageRequests[index].completion(.success(imageData))
-		}
-
-		func completeImageLoadingWithError(at index: Int = 0) {
-			let error = NSError(domain: "an error", code: 0)
-			imageRequests[index].completion(.failure(error))
 		}
 	}
 }
