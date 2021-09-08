@@ -25,7 +25,7 @@ class ImageCommentsSnapshotTests: XCTestCase {
 		let controller = storyboard.instantiateInitialViewController() as! ListViewController
 		controller.loadViewIfNeeded()
 		controller.tableView.showsVerticalScrollIndicator = false
-		controller.tableView.showsVerticalScrollIndicator = false
+		controller.tableView.showsHorizontalScrollIndicator = false
 		return controller
 	}
 
