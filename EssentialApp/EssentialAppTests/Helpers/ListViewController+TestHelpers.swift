@@ -59,7 +59,7 @@ extension ListViewController {
 		commentView(at: row)?.messageLabel.text
 	}
 
-	func commentView(at row: Int) -> ImageCommentCell? {
+	private func commentView(at row: Int) -> ImageCommentCell? {
 		cell(row: row, section: commentsSection) as? ImageCommentCell
 	}
 
