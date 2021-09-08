@@ -21,6 +21,10 @@ func makeItemsJSON(_ items: [[String: Any]]) -> Data {
 	return try! JSONSerialization.data(withJSONObject: json)
 }
 
+func successfulStatusCode() -> [Int] {
+	return [200, 201, 250, 280, 299]
+}
+
 extension HTTPURLResponse {
 	convenience init(statusCode: Int) {
 		self.init(url: anyURL(), statusCode: statusCode, httpVersion: nil, headerFields: nil)!

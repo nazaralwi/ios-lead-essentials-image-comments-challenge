@@ -19,7 +19,7 @@ class ImageCommentsMapperTests: XCTestCase {
 
 	func test_map_throwsErrorOn2xxHTTPResponseWithInvalidJSON() throws {
 		let invalidJSON = Data("invalid json".utf8)
-		let samples = [200, 201, 250, 280, 299]
+		let samples = successfulStatusCode()
 
 		try samples.forEach { code in
 			XCTAssertThrowsError(
@@ -30,7 +30,7 @@ class ImageCommentsMapperTests: XCTestCase {
 
 	func test_map_deliversNoItemsOn2xxHTTPResponseWithEmptyJSONList() throws {
 		let emptyListJSON = makeItemsJSON([])
-		let samples = [200, 201, 250, 280, 299]
+		let samples = successfulStatusCode()
 
 		try samples.forEach { code in
 			let result = try ImageCommentsMapper.map(emptyListJSON, from: HTTPURLResponse(statusCode: code))
@@ -55,7 +55,7 @@ class ImageCommentsMapperTests: XCTestCase {
 		)
 
 		let json = makeItemsJSON([item1.json, item2.json])
-		let samples = [200, 201, 250, 280, 299]
+		let samples = successfulStatusCode()
 
 		try samples.forEach { code in
 			let result = try ImageCommentsMapper.map(json, from: HTTPURLResponse(statusCode: code))
