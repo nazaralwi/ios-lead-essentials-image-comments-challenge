@@ -122,7 +122,7 @@ class FeedAcceptanceTests: XCTestCase {
 	private func makeCommentsData() -> Data {
 		return try! JSONSerialization.data(withJSONObject: ["items": [
 			[
-				"id": UUID().uuidString,
+				"id": "2AB2AE66-A4B7-4A16-B374-51BBAC8DB086",
 				"message": makeCommentMessage(),
 				"created_at": "2020-05-20T11:24:59+0000",
 				"author": [
