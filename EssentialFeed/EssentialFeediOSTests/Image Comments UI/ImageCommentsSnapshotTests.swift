@@ -10,7 +10,7 @@ class ImageCommentsSnapshotTests: XCTestCase {
 	func test_listWithComment() {
 		let sut = makeSUT()
 
-		sut.display(comments())
+		sut.display(commentCellControllers())
 
 		assert(snapshot: sut.snapshot(for: .iPhone8(style: .light)), named: "IMAGE_COMMENTS_light")
 		assert(snapshot: sut.snapshot(for: .iPhone8(style: .dark)), named: "IMAGE_COMMENTS_dark")
@@ -29,7 +29,7 @@ class ImageCommentsSnapshotTests: XCTestCase {
 		return controller
 	}
 
-	private func comments() -> [CellController] {
+	private func commentCellControllers() -> [CellController] {
 		commentControllers().map { CellController(id: UUID(), $0) }
 	}
 
