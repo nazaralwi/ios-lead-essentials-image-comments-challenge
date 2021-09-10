@@ -30,31 +30,26 @@ class ImageCommentsSnapshotTests: XCTestCase {
 	}
 
 	private func commentCellControllers() -> [CellController] {
-		commentControllers().map { CellController(id: UUID(), $0) }
+		let commentControllers = commentViewModels().map(ImageCommentCellController.init)
+		return commentControllers.map { CellController(id: UUID(), $0) }
 	}
 
-	private func commentControllers() -> [ImageCommentCellController] {
+	private func commentViewModels() -> [ImageCommentViewModel] {
 		return [
-			ImageCommentCellController(
-				model: ImageCommentViewModel(
-					message: "The East Side Gallery is an open-air gallery in Berlin. It consists of a series of murals painted directly on a 1,316 m long remnant of the Berlin Wall, located near the centre of Berlin, on Mühlenstraße in Friedrichshain-Kreuzberg. The gallery has official status as a Denkmal, or heritage-protected landmark.",
-					date: "1000 years ago",
-					username: "a long long long long long username"
-				)
+			ImageCommentViewModel(
+				message: "The East Side Gallery is an open-air gallery in Berlin. It consists of a series of murals painted directly on a 1,316 m long remnant of the Berlin Wall, located near the centre of Berlin, on Mühlenstraße in Friedrichshain-Kreuzberg. The gallery has official status as a Denkmal, or heritage-protected landmark.",
+				date: "1000 years ago",
+				username: "a long long long long long username"
 			),
-			ImageCommentCellController(
-				model: ImageCommentViewModel(
-					message: "Garth Pier is a Grade II listed structure in Bangor, Gwynedd, North Wales.",
-					date: "10 days ago",
-					username: "a username"
-				)
+			ImageCommentViewModel(
+				message: "Garth Pier is a Grade II listed structure in Bangor, Gwynedd, North Wales.",
+				date: "10 days ago",
+				username: "a username"
 			),
-			ImageCommentCellController(
-				model: ImageCommentViewModel(
-					message: "nice",
-					date: "1 hour ago",
-					username: "a."
-				)
+			ImageCommentViewModel(
+				message: "nice",
+				date: "1 hour ago",
+				username: "a."
 			)
 		]
 	}
